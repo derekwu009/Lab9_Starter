@@ -87,21 +87,128 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({
+      token: "2510cdc82bd546c0a959bb869853bd1f",
+      application: "lab9"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
+  <script>
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+      }
+    }
+
+    window.onerror = (message, source, lineno, colno, error) => {
+      console.log('error caught');
+      console.log('message:', message);
+      console.log('source:', source);
+      console.log('line number:', lineno);
+      console.log('column number:', colno);
+      console.log('error:', error);
+    };
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        if (isNaN(firstNum) || isNaN(secondNum)) {
+          throw new ValidationError('inputs must be numbers');
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {
+        if (err instanceof ValidationError) {
+          alert('input error');
+          console.error('error found: ', err.message);
+          output.innerHTML = err.message;
+        } else {
+          throw err;
+        }
+      } finally {
+        console.log('calculation finished');
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        switch (btn.textContent.trim()) {
+          case 'Console Log':
+            console.log('log');
+            break;
+          case 'Console Error':
+            console.error('error');
+            break;
+          case 'Console Count':
+            console.count('count');
+            break;
+          case 'Console Warn':
+            console.warn('warn');
+            break;
+          case 'Console Assert':
+            const x = 5;
+            const y = 3;
+            console.assert(x < y, `expected ${x} > ${y}`);
+            break;
+          case 'Console Clear':
+            console.clear();
+            break;
+          case 'Console Dir':
+            console.dir(document.head);
+            break;
+          case 'Console dirxml':
+            console.dirxml(document);
+            break;
+          case 'Console Group Start':
+            console.group();
+            break;
+          case 'Console Group End':
+            console.groupEnd();
+            break;
+          case 'Console Table':
+            console.table([
+              {
+                name: 'bob',
+                age: 20
+              },
+              {
+                name: 'ross',
+                age: 21
+              }
+            ]);
+            break;
+          case 'Start Timer':
+            console.time();
+            for (var i = 0; i < 100000; i++) {
+              let square = i ** 2;
+            }
+            break;
+          case 'End Timer':
+            console.timeEnd();
+            break;
+          case 'Console Trace':
+            console.trace('Console Trace Demo');
+            break;
+          case 'Trigger a Global Error':
+            surelyThisExists();
+            break;
+          default:
+            console.log('Default');
+        }
+      });
+    });
   </script>
 </body>
 
