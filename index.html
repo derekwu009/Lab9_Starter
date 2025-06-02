@@ -87,12 +87,11 @@
     </section>
   </main>
 
+
   <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
-    TrackJS.install({
-      token: "2510cdc82bd546c0a959bb869853bd1f",
-      application: "lab9"
-      // for more configuration options, see https://docs.trackjs.com
+    window.TrackJS && TrackJS.install({
+      token: "2510cdc82bd546c0a959bb869853bd1f"
     });
     TrackJS.track('Testing TrackJS!');
 
