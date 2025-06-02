@@ -89,13 +89,13 @@
 
   <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
-    window.TrackJS && TrackJS.install({
+    TrackJS.install({
       token: "2510cdc82bd546c0a959bb869853bd1f",
       application: "lab9"
       // for more configuration options, see https://docs.trackjs.com
     });
     TrackJS.track('Testing TrackJS!');
-    
+
     class ValidationError extends Error {
       constructor(message) {
         super(message);
